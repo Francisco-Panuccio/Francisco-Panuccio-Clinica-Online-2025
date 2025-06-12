@@ -1,0 +1,156 @@
+<app-navbar></app-navbar>
+@if(this.cargando === true) {
+    <div class="loading-container-general">
+        <p class="p_spinner">Cargando Información...</p>
+        <div class="spinner"></div>
+    </div>
+} @else { 
+    @if(this.perfil === "Paciente") {
+        <div class="div_contenedor">
+            <div class="div_turnos">
+                <p>Mis Turnos</p>
+                <input type="text" placeholder="Busque aquí..." [(ngModel)]="filtro" (input)="filtrarTurnos()">
+                @for(turno of turnos; track turno) {
+                    <div class="div_datos">
+                        <span><strong>Especialista:</strong> {{turno.especialistaApellido}}</span>
+                        <span><strong>Especialidad:</strong> {{turno.especialidad | titlecase}}</span>
+                        <span><strong>Fecha:</strong> {{turno.fecha | date:"dd/MM/yyyy"}}</span>
+                        <span><strong>Hora:</strong> {{turno.hora | formatoHora}}</span>
+                        <span class="span_estado" [style.color]="turno.estado | estadoTurno"><strong>Estado del Turno:</strong> {{turno.estado}}</span>
+                        <div class="div_btns">
+                            @if(turno.estado === "Pendiente" || turno.estado === "Aceptado") {
+                                <button (click)="mostrarComentarioPara(turno, 'Cancelado')">Cancelar Turno</button>
+                            }
+
+                            @if(turno.comentario_especialista) {
+                                <button (click)="verComentario(turno.id_turno)" class="btn_comentario">Ver Comentario</button>
+                                @if(verComentarioBool[turno.id_turno] === true) {
+                                    <span class="span_comentario">{{turno.comentario_especialista}}</span>
+                                }
+                            }
+
+                            @if(turno.estado === "Realizado" && turno.comentario_especialista && !turno.encuesta) {
+                                <button (click)="mostrarEncuesta(turno.id_turno)">Completar Encuesta</button>
+                                @if(completarEncuesta[turno.id_turno] === true) {
+                                    <form [formGroup]="encuesta" (ngSubmit)="enviarEncuesta(turno)" class="form_encuesta">
+                                        <div class="div_encuesta">
+                                            <span>Atención Profesional (1-10)</span>
+                                            <input type="number" appSoloNumeros formControlName="atencion">
+                                            <app-form-errors [control]="encuesta.controls.atencion"/>
+                                        </div>
+
+                                        <div class="div_encuesta">
+                                            <span>Plataforma (1-10)</span>
+                                            <input type="number" appSoloNumeros formControlName="plataforma">
+                                            <app-form-errors [control]="encuesta.controls.plataforma"/>
+                                        </div>
+
+                                        <div class="div_encuesta">
+                                            <span>Tardanza</span>
+                                            <select formControlName="tardanza">
+                                                <option>Poca</option>
+                                                <option>Normal</option>
+                                                <option>Excesiva</option>
+                                            </select>
+                                            <app-form-errors [control]="encuesta.controls.tardanza"/>
+                                        </div>
+
+                                        <button type="submit" [disabled]="encuesta.invalid">Enviar</button>
+                                    </form>
+                                }
+                            }
+
+                            @if(turno.estado === "Realizado" && !turno.comentario_paciente) {
+                                <button (click)="mostrarComentarioPara(turno, 'Realizado')">Calificar Atención</button>
+                            }
+
+                            @if(mostrarComentario[turno.id_turno]) {
+                                <textarea placeholder="Escriba un comentario..." [(ngModel)]="comentario_value[turno.id_turno]"></textarea>
+                                <button (click)="enviarComentario(turno, 'Paciente')">Enviar</button>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    } @else if(this.perfil === "Especialista") {
+        <div class="div_contenedor">
+            <div class="div_turnos">
+                <p>Mis Turnos</p>
+                <input type="text" placeholder="Busque aquí..." [(ngModel)]="filtro" (input)="filtrarTurnos()">
+                @for(turno of turnos; track turno) {
+                    <div class="div_datos">
+                        <span><strong>Paciente:</strong> {{turno.pacienteApellido}}</span>
+                        <span><strong>Especialidad:</strong> {{turno.especialidad | titlecase}}</span>
+                        <span><strong>Fecha:</strong> {{turno.fecha | date:"dd/MM/yyyy"}}</span>
+                        <span><strong>Hora:</strong> {{turno.hora | formatoHora}}</span>
+                        <span class="span_estado" [style.color]="turno.estado | estadoTurno"><strong>Estado del Turno:</strong> {{turno.estado}}</span>
+                        <div class="div_btns">
+                            @if(turno.estado === "Pendiente") {
+                                <button (click)="aceptarTurno(turno)">Aceptar Turno</button>
+                                <button (click)="mostrarComentarioPara(turno, 'Rechazado')">Rechazar Turno</button>
+                            } @else if(turno.estado === "Aceptado") {
+                                <button (click)="mostrarComentarioPara(turno, 'Realizado')">Finalizar Turno</button>
+                                <button (click)="mostrarComentarioPara(turno, 'Cancelado')">Cancelar Turno</button>
+                            }
+
+                            @if(mostrarComentario[turno.id_turno]) {
+                                <textarea [placeholder]="placeholder" [(ngModel)]="comentario_value[turno.id_turno]"></textarea>
+                                <button (click)="enviarComentario(turno)">Enviar</button>
+                            }
+
+                            @if(turno.comentario_especialista) {
+                                <button (click)="verComentario(turno.id_turno)" class="btn_comentario">Ver Comentario</button>
+                                @if(verComentarioBool[turno.id_turno] === true) {
+                                    <span class="span_comentario_esp">{{turno.comentario_especialista}}</span>
+                                }
+                            }
+
+                            @if(turno.estado === "Realizado" && !turno.historia_clinica) {
+                                <p class="p_historial">Historial Clínico</p>
+                                <form class="form_historial" [formGroup]="datosClinicos" (ngSubmit)="enviarDatosClinicos(turno)">
+                                    <div class="div_historial">  
+                                        <span>Altura (cm)</span>
+                                        <input type="text" formControlName="altura">
+                                    </div>
+                                    <app-form-errors [control]="datosClinicos.controls.altura" class="error_historial"/>
+                                    <div class="div_historial">  
+                                        <span>Peso (kg)</span>
+                                        <input type="text" formControlName="peso">
+                                    </div>
+                                    <app-form-errors [control]="datosClinicos.controls.peso" class="error_historial"/>
+                                    <div class="div_historial">  
+                                        <span>Temperatura (°C)</span>
+                                        <input type="text" formControlName="temperatura">
+                                    </div>
+                                    <app-form-errors [control]="datosClinicos.controls.temperatura" class="error_historial"/>
+                                    <div class="div_historial">  
+                                        <span>Presión (mmHg)</span>
+                                        <input type="text" formControlName="presion">
+                                    </div>
+                                    <app-form-errors [control]="datosClinicos.controls.presion" class="error_historial"/>
+
+                                    <p class="p_extra">Agregar Datos Adicionales<br>(Máximo 3)</p>
+                                    @for(dato of datosAdicionales; track dato) {
+                                        <div class="div_extra">
+                                            <input type="text" placeholder="Clave" [(ngModel)]="dato.clave" [ngModelOptions]="{standalone: true}" class="input_extra" required>
+                                            <input type="text" placeholder="Valor" [(ngModel)]="dato.valor" [ngModelOptions]="{standalone: true}" class="input_extra" required>
+                                            <button type="button" (click)="eliminarDatoAdicional(dato)">Eliminar Dato</button>
+                                        </div>
+                                    }
+                                    @if(datosAdicionales.length < 3) {
+                                        <button type="button" (click)="agregarDatoAdicional()" class="btn_agregar_dato">Agregar Dato</button>
+                                    }
+
+                                    <button type="submit" class="btn_historial" [disabled]="datosClinicos.invalid">Enviar</button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    } @else {
+        <p>Error</p>
+    }
+}

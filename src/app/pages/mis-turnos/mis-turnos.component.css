@@ -1,0 +1,141 @@
+.div_contenedor {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+p {
+  font-size: 60px;
+  font-weight: 800;
+  text-decoration: underline;
+  margin: 20px 0;
+}
+
+input {
+  margin: 0 0 30px 0;
+  width: 300px;
+  height: 50px;
+  border-radius: 10px;
+  font-size: 20px;
+  padding-left: 10px;
+  border: 2px solid var(--secondary-color);
+}
+
+strong {
+  text-decoration: underline;
+  color: var(--tertiary-color);
+}
+
+span {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.span_estado {
+  margin-bottom: 10px;
+}
+
+.div_btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.div_btns button {
+  margin: 10px 0;
+  border-radius: 10px;
+  padding: 5px;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+textarea {
+  resize: none;
+  margin: 20px 10px 20px 10px;
+  width: 300px;
+  height: 100px;
+}
+
+.form_encuesta {
+  margin: 10px 0;
+  padding: 10px 20px;
+}
+
+.div_encuesta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 10px 0;
+}
+
+.div_encuesta span {
+  margin: 0 0 10px 0;
+}
+
+.div_encuesta input {
+  width: 100px;
+  margin: 0 0 10px 0;
+}
+
+.span_comentario {
+  margin: 10px;
+}
+
+.p_historial {
+  font-size: 50px;
+  margin: 0 0 20px 0;
+}
+.form_historial {
+  margin: 0 10px 10px 10px;
+}
+
+.div_historial {
+  display: flex;
+  align-items: center;
+  width: 400px;
+}
+
+.div_historial span {
+  margin: 0 auto 0 0;
+}
+
+.div_historial input {
+  width: 200px;
+  margin: 0;
+}
+
+.p_extra {
+  font-size: 25px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.btn_historial {
+  font-size: 20px !important;
+  margin: 10px 0 0 0 !important;
+}
+
+.div_extra {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border: 5px dashed var(--quaternary-color);
+  padding: 10px;
+  margin: 0 0 10px 0;
+}
+
+.input_extra {
+  margin: 0 0 10px 0;
+}
+
+.btn_agregar_dato {
+  margin: 0 0 10px 0 !important;
+}
+
+.error_historial {
+  align-self: flex-start;
+}

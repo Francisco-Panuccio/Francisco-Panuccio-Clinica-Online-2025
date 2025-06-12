@@ -1,0 +1,103 @@
+<app-navbar></app-navbar>
+@if(this.cargando === true) {
+    <div class="loading-container-general">
+        <p class="p_spinner">Cargando Información...</p>
+        <div class="spinner"></div>
+    </div>
+} @else {
+    <div class="div_main">
+        <p>Logs</p>
+        <div class="div_logs">
+            @for(log of logs; track log) {
+                <div class="div_log_unitario" [appColorearUsuario]="log.tipoUsuario">
+                    <span class="span_value"><span class="span_titles">Usuario:</span> {{log.usuario}}</span>
+                    <span class="span_value"><span class="span_titles">Fecha y Hora:</span> {{log.fecha_hora | date:"dd/MM/yyyy"}} - {{log.fecha_hora | date:"HH:mm" | formatoHora}}</span>
+                </div>
+            }
+        </div>
+
+        <p>Cantidad de Turnos por Especialidad</p>
+        @if(chartEspecialidad) {
+            <div id="graficoEspecialidad" class="div_grafico">
+                <apx-chart
+                    [series]="chartEspecialidad.series"
+                    [chart]="chartEspecialidad.chart"
+                    [xaxis]="chartEspecialidad.xaxis"
+                    [title]="chartEspecialidad.title">
+                </apx-chart>
+            </div>
+        }
+
+        <p>Cantidad de Turnos por Día</p>
+        @if(chartFecha) {
+            <div id="graficoFecha" class="div_grafico">
+                <apx-chart
+                    [series]="chartFecha.series"
+                    [chart]="chartFecha.chart"
+                    [xaxis]="chartFecha.xaxis"
+                    [title]="chartFecha.title">
+                </apx-chart>
+            </div>
+        }
+
+        <p>Cantidad de Turnos Solicitados a Especialista</p>
+        <div class="div_turnos_filtrados">
+            <span class="span_turnos_filtrados">Especialista:</span>
+            <select class="select_turnos_filtrados" [(ngModel)]="especialistaSeleccionadoSolicitado">
+                @for(esp of especialistas; track esp) {
+                    <option [value]="esp.id_especialista">{{esp.nombreCompleto}}</option>
+                }
+            </select>
+
+            <span class="span_turnos_filtrados">Fecha de Inicio:</span>
+            <input class="input_turnos_filtrados" type="date" [(ngModel)]="fechaInicialSolicitado">
+
+            <span class="span_turnos_filtrados">Fecha de Finalización:</span>
+            <input class="input_turnos_filtrados" type="date" [(ngModel)]="fechaFinalSolicitado">
+
+            <button class="btn_filtrar" (click)="filtrarTurnos('Solicitado')">Filtrar</button>
+        </div>
+        @if(chartEspecialistaSolicitado) {
+            <div id="graficoEspecialistaSolicitado" class="div_grafico">
+                <apx-chart
+                    [series]="chartEspecialistaSolicitado.series"
+                    [chart]="chartEspecialistaSolicitado.chart"
+                    [xaxis]="chartEspecialistaSolicitado.xaxis"
+                    [title]="chartEspecialistaSolicitado.title">
+                </apx-chart>
+            </div>
+        }
+
+        <p>Cantidad de Turnos Finalizados por Especialista</p>
+        <div class="div_turnos_filtrados">
+            <span class="span_turnos_filtrados">Especialista:</span>
+            <select class="select_turnos_filtrados" [(ngModel)]="especialistaSeleccionadoFinalizado">
+                @for(esp of especialistas; track esp) {
+                    <option [value]="esp.id_especialista">{{esp.nombreCompleto}}</option>
+                }
+            </select>
+
+            <span class="span_turnos_filtrados">Fecha de Inicio:</span>
+            <input class="input_turnos_filtrados" type="date" [(ngModel)]="fechaInicialFinalizado">
+
+            <span class="span_turnos_filtrados">Fecha de Finalización:</span>
+            <input class="input_turnos_filtrados" type="date" [(ngModel)]="fechaFinalFinalizado">
+
+            <button class="btn_filtrar" (click)="filtrarTurnos('Finalizado')">Filtrar</button>
+        </div>
+        @if(chartEspecialistaFinalizado) {
+            <div id="graficoEspecialistaFinalizado" class="div_grafico">
+                <apx-chart
+                    [series]="chartEspecialistaFinalizado.series"
+                    [chart]="chartEspecialistaFinalizado.chart"
+                    [xaxis]="chartEspecialistaFinalizado.xaxis"
+                    [title]="chartEspecialistaFinalizado.title">
+                </apx-chart>
+            </div>
+        }
+
+        <div>
+            <button type="button" class="btn_descargar" (click)="descargarPDF()" [disabled]="descargandoPDF">Descargar PDF</button>
+        </div>
+    </div>
+}

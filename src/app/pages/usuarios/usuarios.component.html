@@ -1,0 +1,137 @@
+<app-navbar></app-navbar>
+@if(this.cargando === true) {
+    <div class="loading-container-general">
+        <p class="p_spinner">Cargando Información...</p>
+        <div class="spinner"></div>
+    </div>
+} @else {
+    <div class="div_main">
+        <div class="div_btns_opts">
+            <button (click)="registrarAdmins = false" class="btn_registro">Usuarios</button>
+            <button (click)="registrarAdmins = true" class="btn_registro">Registro</button>
+        </div>
+        @if(this.registrarAdmins) {
+            <p class="title">Registro de Administrador</p>
+            <div class="div_form">
+                <form [formGroup]="formulario" (ngSubmit)="registrarAdmin()">
+                    <input type="text" formControlName="nombre" placeholder="Nombre">
+                    <app-form-errors [control]="formulario.controls.nombre"/>
+
+                    <input type="text" formControlName="apellido" placeholder="Apellido">
+                    <app-form-errors [control]="formulario.controls.apellido"/>
+
+                    <input type="text" formControlName="edad" placeholder="Edad">
+                    <app-form-errors [control]="formulario.controls.edad"/>
+                    
+                    <input type="text" formControlName="dni" placeholder="D.N.I. (Sin Puntos)">
+                    <app-form-errors [control]="formulario.controls.dni"/>
+
+                    <input type="email" formControlName="email" placeholder="Email">
+                    @if(this.usuarioRegistrado) {<span class="span_error">Usuario Registrado</span>}
+                    <app-form-errors [control]="formulario.controls.email"/>
+
+                    <div class="div_contraseña">
+                        <input [type]="isPasswordVisible ? 'text' : 'password'" formControlName="contrasena" placeholder="Contraseña">
+                        <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+                            <i [class]="isPasswordVisible ?  'bi-eye-fill' : 'bi bi-eye-slash-fill'"></i>
+                        </button>
+                    </div>
+                    <app-form-errors [control]="formulario.controls.contrasena"/>
+
+                    <div>
+                        <p>Seleccione Una Foto:</p>
+                        <input type="file" formControlName="archivo" (change)="onCambioDeArchivo($event)" multiple>
+                    </div>
+                    <app-form-errors [control]="formulario.controls.archivo"/>
+
+                    <app-captcha></app-captcha>
+
+                    <button type="submit" class="btn_enviar" [disabled]="formulario.invalid">Enviar</button>
+                </form>
+            </div>
+        } @else {
+            <p class="title">Lista de Usuarios</p>
+            @for(usuario of usuarios; track usuario) {
+                @if(usuario.perfil === "Especialista") {
+                    <div class="div_contenedor">
+                        <div class="div_imagen">
+                            <button type="button" class="btn_redondo" (click)="mostrarData(usuario.id)">
+                                <img [src]="fotosUsuarios[usuario.email] || fotoPerfilDefault" class="img_redonda">
+                            </button>
+                            <span class="span_nombre">{{`${usuario.nombre} ${usuario.apellido}`}}</span>
+                        </div>
+                        @if(dataExpandida.has(usuario.id)) {
+                            <div><span class="span_titles">Nombre:</span><span class="span_data"> {{usuario.nombre}}</span></div>
+                            <div><span class="span_titles">Apellido:</span><span class="span_data"> {{usuario.apellido}}</span></div>
+                            <div><span class="span_titles">Edad:</span><span class="span_data"> {{usuario.edad}}</span></div>
+                            <div><span class="span_titles">DNI:</span><span class="span_data"> {{usuario.dni | formatoDNI}}</span></div>
+                            <div><span class="span_titles">Email:</span><span class="span_data"> {{usuario.email}}</span></div>
+                            <div><span class="span_titles">Perfil:</span><span class="span_data"> {{usuario.perfil}}</span></div>
+                            <div><span class="span_titles">Especialidades:</span>
+                                @for(e of usuario.especialidades; track e) {
+                                    @if($index !== usuario.especialidades.length - 1) {
+                                        <span class="span_data"> {{e}},</span>
+                                    } @else {
+                                        <span class="span_data"> {{e}}</span>
+                                    }
+                                }
+                            </div>
+                            @if(usuario.estado === "Habilitado") {
+                                <div><span class="span_titles">Estado:</span><span class="span_data_habilitado"> {{usuario.estado}}</span></div>
+                            } @else if(usuario.estado === "Inhabilitado") {
+                                <div><span class="span_titles">Estado:</span><span class="span_data_inhabilitado"> {{usuario.estado}}</span></div>
+                            } @else {
+                                <div><span class="span_titles">Estado:</span><span class="span_data"> {{usuario.estado}}</span></div>
+                            }
+                            <div class="div_btns">
+                                @if(usuario.estado === "Pendiente" || usuario.estado === "Inhabilitado") {
+                                    <button class="btn_habilitacion" (click)="habilitacionEspecialista('Habilitado', usuario.id_especialista)">Habilitar</button>
+                                } @else {
+                                    <button class="btn_habilitacion" (click)="habilitacionEspecialista('Inhabilitado', usuario.id_especialista)">Inhabilitar</button>
+                                }
+                            </div>
+                            <button class="btn_descargar" (click)="descargarExcel(usuario)" [disabled]="descargandoExcel">Descargar Excel</button>
+                        }
+                    </div>
+                } @else if(usuario.perfil === "Paciente") {
+                    <div class="div_contenedor">
+                        <div class="div_imagen">
+                            <button type="button" class="btn_redondo" (click)="mostrarData(usuario.id)">
+                                <img [src]="fotosUsuarios[usuario.email] || fotoPerfilDefault" class="img_redonda">
+                            </button>
+                            <span class="span_nombre">{{`${usuario.nombre} ${usuario.apellido}`}}</span>
+                        </div>
+                        @if(dataExpandida.has(usuario.id)) {
+                            <div><span class="span_titles">Nombre:</span><span class="span_data"> {{usuario.nombre}}</span></div>
+                            <div><span class="span_titles">Apellido:</span><span class="span_data"> {{usuario.apellido}}</span></div>
+                            <div><span class="span_titles">Edad:</span><span class="span_data"> {{usuario.edad}}</span></div>
+                            <div><span class="span_titles">DNI:</span><span class="span_data"> {{usuario.dni | formatoDNI}}</span></div>
+                            <div><span class="span_titles">Email:</span><span class="span_data"> {{usuario.email}}</span></div>
+                            <div><span class="span_titles">Perfil:</span><span class="span_data"> {{usuario.perfil}}</span></div>
+                            <div><span class="span_titles">Obra Social:</span><span class="span_data"> {{usuario.obra_social}}</span></div>
+                            <button class="btn_descargar" (click)="descargarExcel(usuario)" [disabled]="descargandoExcel">Descargar Excel</button>
+                        }
+                    </div>
+                } @else {
+                    <div class="div_contenedor">
+                        <div class="div_imagen">
+                            <button type="button" class="btn_redondo" (click)="mostrarData(usuario.id)">
+                                <img [src]="fotosUsuarios[usuario.email] || fotoPerfilDefault" class="img_redonda">
+                            </button>
+                            <span class="span_nombre">{{`${usuario.nombre} ${usuario.apellido}`}}</span>
+                        </div>
+                        @if(dataExpandida.has(usuario.id)) {
+                            <div><span class="span_titles">Nombre:</span><span class="span_data"> {{usuario.nombre}}</span></div>
+                            <div><span class="span_titles">Apellido:</span><span class="span_data"> {{usuario.apellido}}</span></div>
+                            <div><span class="span_titles">Edad:</span><span class="span_data"> {{usuario.edad}}</span></div>
+                            <div><span class="span_titles">DNI:</span><span class="span_data"> {{usuario.dni | formatoDNI}}</span></div>
+                            <div><span class="span_titles">Email:</span><span class="span_data"> {{usuario.email}}</span></div>
+                            <div><span class="span_titles">Perfil:</span><span class="span_data"> {{usuario.perfil}}</span></div>
+                            <button class="btn_descargar" (click)="descargarExcel(usuario)" [disabled]="descargandoExcel">Descargar Excel</button>
+                        }
+                    </div>
+                }
+            }
+        }
+    </div>
+}

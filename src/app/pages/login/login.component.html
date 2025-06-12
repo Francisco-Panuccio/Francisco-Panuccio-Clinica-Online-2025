@@ -1,0 +1,43 @@
+<div class="div_main">
+    <h1>Inicio de Sesión</h1>
+
+    <div class="div_form">
+        <input type="text" [(ngModel)]="email" placeholder="Correo Electrónico" required>
+
+        <div class="div_contraseña">
+            <input [type]="isPasswordVisible ? 'text' : 'password'" [(ngModel)]="clave" placeholder="Contraseña"
+                required>
+            <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+                <i [class]="isPasswordVisible ?  'bi-eye-fill' : 'bi bi-eye-slash-fill'"></i>
+            </button>
+        </div>
+
+        @if(iSesion) {
+        <p class="sesionInc">Credenciales Incorrectas</p>
+        }
+        <button class="btn_enviar" (click)="loguearse(email, clave)">Iniciar Sesión</button>
+    </div>
+
+    <div class="sign-up">
+        <div class="div_register">
+            <p>¿Aún no eres miembro?</p>
+            <a href="registro"> ¡Registrate Ya!</a>
+        </div>
+    </div>
+
+    <div class="div_contenedor_fab-btn">
+        <button class="fab-btn" (click)="toggleMenu()">
+            <span class="fab-text">Sesiones</span>
+        </button>
+        @if(menuVisible) {
+            <div class="social-opts" [ngClass]="menuOpen ? 'social-opts-show' : 'social-opts-hide'" >
+                <button class="btn_login btn_admin" [style.background-image]="'url('+admin+')'" (click)="loguearse('franciscopanuccio@hotmail.com', '123123')"></button>
+                <button class="btn_login btn_esp" [style.background-image]="'url('+especialistaUno+')'" (click)="loguearse('brian@gmail.com', '123123')"></button>
+                <button class="btn_login btn_esp" [style.background-image]="'url('+especialistaDos+')'" (click)="loguearse('nicole@gmail.com', '123123')"></button>
+                <button class="btn_login btn_pac" [style.background-image]="'url('+pacienteUno+')'" (click)="loguearse('gustavo@gmail.com', '123123')"></button>
+                <button class="btn_login btn_pac" [style.background-image]="'url('+pacienteDos+')'" (click)="loguearse('fernando@gmail.com', '123123')"></button>
+                <button class="btn_login btn_pac" [style.background-image]="'url('+pacienteTres+')'" (click)="loguearse('julian@gmail.com', '123123')"></button>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="div_captcha">
+    <img [src]="url_captcha" alt="captcha" class="img_captcha">
+    <div class="div_contenedor">
+        <div class="div_input">
+            <input type="text" [(ngModel)]="valor_captcha" placeholder="Escriba la palabra...">
+        </div>
+        <div class="div_contenedor_dos">
+            <button type="button" class="btn_recaptcha" (click)="eleccionCaptcha()" [disabled]="!captcha_cargado"><i class="bi bi-arrow-clockwise"></i></button>
+            <img src="images/captcha/stop_spam.jpg" alt="stop spam" class="img_stop_spam">
+        </div>
+    </div>
+</div>

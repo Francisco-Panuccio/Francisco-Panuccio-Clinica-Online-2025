@@ -1,0 +1,227 @@
+.div_main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+}
+
+h1 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;
+  font-size: 80px;
+  font-weight: 600;
+  margin: 200px 0 20px 0;
+  text-decoration: underline;
+}
+
+.div_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  padding: 30px;
+  border: solid var(--secondary-color) 2px;
+  border-radius: 4px;
+  box-shadow: 1px 1px 5px var(--secondary-color);
+  margin: 20px 0 20px 0;
+}
+
+.div_form input {
+  padding: 5px;
+  width: 500px;
+}
+
+.div_contraseña input {
+  margin: 0 5px 0 0;
+  width: 460px;
+}
+
+.btn_enviar {
+  border-radius: 8px;
+  width: fit-content;
+  font-weight: 600;
+  padding: 8px;
+  margin: 20px 0 0 0;
+  font-size: 18px;
+  align-self: center;
+  background-color: var(--primary-color);
+}
+
+.btn_enviar:hover {
+  background: rgba(181, 185, 190, 0.466);
+  color: var(--tertiary-color);
+}
+
+.btn_login {
+  margin: 30px 0 10px 0;
+  height: 60px;
+  width: 60px;
+  font-size: 18px;
+  line-height: 50px;
+  font-weight: 600;
+  border-radius: 50%;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #595959;
+  box-shadow: 2px 2px 5px #BABECC,
+    -5px -5px 10px #ffffff73;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: inline-flex;
+  text-decoration: none;
+  border: double 2px var(--secondary-color);
+  margin: 0 20px;
+}
+
+.btn_admin:hover::after {
+  content: "A";
+  color: var(--primary-color);
+  background: var(--tertiary-color);
+}
+
+.btn_esp:hover::after {
+  content: "E";
+  color: var(--primary-color);
+  background: var(--quaternary-color);
+}
+
+.btn_pac:hover::after {
+  content: "P";
+  color: var(--primary-color);
+  background: var(--correct-color);
+}
+
+.div_contenedor_fab-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 0 0 20px 20px;
+}
+
+.fab-btn {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  border: 5px solid var(--tertiary-color);
+  text-decoration: underline;
+  margin: 0 20px 0 0;
+  background: #ecf0f3;
+  box-shadow: inset 0px 0px 10px var(--tertiary-color),
+    inset 0px 0px 5px #ceced1;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.6);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+.fab-btn:hover .fab-text{
+  vertical-align: sub;
+}
+
+.fab-btn.active .fab-text {
+  animation: curveDown 0.3s forwards ease-in-out;
+  display: inline-block;
+  transform-origin: top center;
+}
+
+.fab-btn.closing .fab-text {
+  animation: curveUp 0.3s forwards ease-in-out;
+  display: inline-block;
+  transform-origin: top center;
+}
+
+.social-opts {
+  text-align: center;
+}
+
+.social-opts-show {
+  animation: dropdownFadeIn 0.4s ease forwards;
+}
+
+.social-opts-hide {
+  animation: dropdownFadeOut 0.4s ease forwards;
+}
+
+.sign-up {
+  margin: 10px 0 0 0;
+  font-size: 25px;
+}
+
+.div_register {
+  display: flex;
+}
+
+.sign-up p {
+  font-weight: 600;
+  text-decoration: underline;
+  margin: 0 5px 0 0;
+}
+
+.sign-up a {
+  color: var(--tertiary-color);
+  font-weight: 900;
+  text-decoration: none;
+  margin: 0 0 0 5px;
+}
+
+.sesionInc {
+  color: var(--error-color);
+  font-weight: 600;
+  margin: 5px 0 -15px 0;
+}
+
+@keyframes dropdownFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dropdownFadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+}
+
+@keyframes curveDown {
+  0% {
+    transform: rotateX(0deg);
+    filter: none;
+  }
+  100% {
+    transform: rotateX(20deg) translateY(30px);
+    font-size: 10px;
+    filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.2));
+  }
+}
+
+@keyframes curveUp {
+  0% {
+    transform: rotateX(20deg) translateY(30px);
+    font-size: 10px;
+    filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.2));
+  }
+  100% {
+    transform: rotateX(0deg);
+    filter: none;
+  }
+}

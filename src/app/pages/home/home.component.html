@@ -1,0 +1,36 @@
+@if(auth.usuario_actual === null) {
+    <div class="div_main">
+        <h1>Clínica Online</h1>
+        <div class="div_carrusel">
+            <button class="btn_izq" (click)="moverCarrusel(-1)"><span><</span></button>
+            <div class="div_img">
+                @if(imagenes.length > 0) {
+                    <img [src]="imagenes[indice]" alt="medicos" [class.slice-izq]="animando && direccionAnimacion === 'izq'" [class.slice-der]="animando && direccionAnimacion === 'der'" (animationend)="animacionTerminada()">
+                }
+            </div>
+            <button class="btn_der" (click)="moverCarrusel(1)"><span>></span></button>
+        </div>
+        <div class="div_btns">
+            <a class="btn_login" href="login">Iniciar Sesión</a>
+            <span class="line"></span>
+            <a class="btn_register" href="registro">Registrarse</a>
+        </div>
+    </div>
+} @else {
+    <app-navbar></app-navbar>
+    @if(this.cargando === true) {
+        <div class="loading-container-general">
+            <p class="p_spinner">Cargando Información...</p>
+            <div class="spinner"></div>
+        </div>
+    } @else {
+        <div class="div_bienvenida">
+            <p>Bienvenido a la Clínica Online</p>
+            <div>
+                <span class="perfil">{{this.perfil}}</span>
+                <span class="nombre"> {{this.nombre}}</span>
+            </div>
+            <img src="images/home/medico_animado.png" alt="medico_animado" class="img_home">
+        </div>
+    }
+}

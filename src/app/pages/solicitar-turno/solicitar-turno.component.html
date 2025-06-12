@@ -1,0 +1,90 @@
+<app-navbar></app-navbar>
+@if(this.cargando === true) {
+    <div class="loading-container-general">
+        <p class="p_spinner">Cargando Información...</p>
+        <div class="spinner"></div>
+    </div>
+} @else {
+    <div class="div_main">
+        <h1>Solicitar Turno</h1>
+        <div class="div_form">
+            <form [formGroup]="formulario" (ngSubmit)="solicitarTurno()">
+                <div class="div_campos">
+                    <span>Especialidades:</span>
+                    <div class="div_opciones">
+                        @for(especialidad of especialidades; track especialidad) {
+                            <button type="button" class="btn_redondo" (click)="formulario.get('especialidad')?.setValue(especialidad.especialidad)" [appMostrarEspecialidad]="especialidad.especialidad | titlecase ">
+                                <img [src]="especialidad.foto" alt="{{especialidad.especialidad}}" (error)="especialidad.foto = fotoEspecialidadDefault" class="img_redonda">
+                            </button>
+                        }
+                    </div>
+                </div>
+                <app-form-errors [control]="formulario.controls.especialidad"/>
+
+                @if(formulario.controls.especialidad.value) {
+                    <div class="div_campos">
+                        <span>Especialistas:</span>
+                        <div class="div_opciones">
+                            @for(especialista of especialistas; track especialista.id) {
+                                <div>
+                                    <button type="button" class="btn_redondo" (click)="formulario.get('especialista')?.setValue(especialista.id)">
+                                        <img [src]="fotosEspecialistas[especialista.email] || fotoPerfilDefault" class="img_redonda">
+                                    </button>
+                                    <strong>{{especialista.nombreCompleto}}</strong>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <app-form-errors [control]="formulario.controls.especialista"/>
+                }
+
+                @if(formulario.controls.especialista.value && formulario.controls.especialista.value !== 0) {
+                    <div class="div_campos">
+                        <span>Disponibilidad Diaria:</span>
+                        <div class="div_opciones">
+                            @for(dia of fechasDisponibles; track dia) {
+                                <button type="button" class="btn_rectangular" (click)="formulario.get('fecha')?.setValue(dia)">{{ dia | date: "dd/MM" }}</button>
+                            }
+                        </div>
+                        @if(!cargaDeFechas && fechasDisponibles.length === 0) {
+                            <p class="p_aviso">Lo sentimos, no quedan turnos disponibles para los próximos días.</p>
+                        }
+                    </div>
+                    <app-form-errors [control]="formulario.controls.fecha"/>
+                }
+
+                @if(formulario.controls.fecha.value) {
+                    <div class="div_campos">
+                        <span>Disponibilidad Horaria:</span>
+                        <div class="div_opciones">
+                            @for(hora of horariosDisponibles; track hora) {
+                                <button type="button" class="btn_rectangular" (click)="formulario.get('hora')?.setValue(hora)">{{hora | formatoHora }}</button>
+                            }
+                        </div>
+                        @if(!cargaDeHoras && horariosDisponibles.length === 0) {
+                            <p class="p_aviso">Lo sentimos, no quedan horarios disponibles el día seleccionado, intente con otro día.</p>
+                        }
+                    </div>
+                    <app-form-errors [control]="formulario.controls.hora"/>
+                }
+
+
+                @if(this.perfil === "Administrador" && formulario.controls.hora.value) {
+                    <div class="div_campos pacientes">
+                        <span>Pacientes:</span>
+                        <select formControlName="paciente">
+                            @for(paciente of pacientes; track paciente.id) {
+                                <option [value]="paciente.id">{{paciente.nombreCompleto}}</option>
+                            }
+                        </select>
+                    </div>
+                    <app-form-errors [control]="formulario.controls.paciente"/>
+                }
+
+                @if(formulario.valid || (this.perfil === "Administrador" && formulario.controls.paciente.value)) {
+                    <button type="submit" class="btn_solicitar" [disabled]="formulario.invalid">Solicitar Turno</button>
+                }
+            </form>
+        </div>
+    </div>
+}

@@ -1,0 +1,71 @@
+<app-navbar></app-navbar>
+<div class="div_main">
+    <h1>Mi Perfil</h1>
+    <div class="div_contenedor">
+        <div class="div_data">
+            <p class="p_datos">Datos</p>
+            <div><span class="span_titles">Nombre:</span><span> {{nombre}}</span></div>
+            <div><span class="span_titles">Apellido:</span><span> {{apellido}}</span></div>
+            <div><span class="span_titles">DNI:</span><span> {{dni | formatoDNI }}</span></div>
+            <div><span class="span_titles">Email:</span><span> {{email}}</span></div>
+            <div class="div_img"><img [src]="avatar" alt="avatar"></div>
+        </div>
+        @if(this.perfil === "Especialista") {
+            <div class="div_disponibilidad">
+                <p class="p_disponibilidad">Mi Disponibilidad</p>
+                <form (ngSubmit)="actualizarDisponibilidad()">
+                    <div class="div_form_disponibilidad">
+                        <span>Días Laborables</span>
+                        <div class="div_btns">
+                            @for(dia of diasLaborables; track dia) {
+                                <button type="button" (click)="elegirDia(dia)" [class.active]="diasSeleccionados.includes(dia)">{{dia}}</button>
+                            }
+                        </div>
+                    </div>
+                    <div class="div_form_disponibilidad">
+                        <span>Horas Laborables</span>
+                        <div class="div_btns">
+                            @for(hora of horasLaborables; track hora) {
+                                <button type="button" (click)="elegirHora(hora)" [class.active]="horasSeleccionadas.includes(hora)">{{hora}}</button>
+                            }
+                        </div>
+                    </div>
+                    <button type="submit" class="btn_disponibilidad" [disabled]="!submitHabilitado">Actualizar Información</button>
+                </form>
+            </div>
+        }
+    </div>
+    @if(this.perfil === "Paciente") {
+
+        @if(turnos.length === 0) {
+            <p class="p_sin_datos">Sin Historial Clínico</p>
+        } @else {
+            <h2>Historia Clínica</h2>
+            @for(turno of turnos; track turno) {
+                <div class="div_turno">
+                    <span class="span_nombre">{{turno.nombreCompletoEspecialista}}</span>
+                    <div class="div_contenedor_historial">
+                        <span class="span_divisor">Datos Clínicos</span>
+                        <p class="p_historial"><span class="span_clave">Fecha: </span><span class="span_valor">{{turno.fecha | date:"dd/MM/yyyy"}}</span></p>
+                        <p class="p_historial"><span class="span_clave">Altura: </span><span class="span_valor">{{turno.historia_clinica !== null ? turno.historia_clinica.altura+"cm" : "No registrado"}}</span></p>
+                        <p class="p_historial"><span class="span_clave">Peso: </span><span class="span_valor">{{turno.historia_clinica !== null ? turno.historia_clinica.peso+"kg" : "No registrado"}}</span></p>
+                        <p class="p_historial"><span class="span_clave">Temperatura: </span><span class="span_valor">{{turno.historia_clinica !== null ? turno.historia_clinica.temperatura+"°C" : "No registrado"}}</span></p>
+                        <p class="p_historial"><span class="span_clave">Presión: </span><span class="span_valor">{{turno.historia_clinica !== null ? turno.historia_clinica.presion+"mmHg" : "No registrado"}}</span></p>
+                        @if(turno.historia_clinica !== null && turno.historia_clinica.datosAdicionales.length > 0) {
+                            @for(dato of turno.historia_clinica.datosAdicionales; track dato) {
+                                <p class="p_historial"><span class="span_clave">{{dato.clave | titlecase}}: </span><span class="span_valor">{{dato.valor | titlecase}}</span></p>
+                            }
+                        }
+                    </div>
+                </div>
+                @if(turno.historia_clinica !== null && turno.flagDescarga) {
+                    <div class="div_btn_descargar">
+                        <span class="span_line"></span>
+                        <button type="button" class="btn_descargar" (click)="descargarPDF(turno.id_especialista)" [disabled]="descargandoPDF">Descargar PDF - {{turno.nombreCompletoEspecialista}}</button>
+                        <span class="span_line"></span>
+                    </div>
+                }
+            }
+        }
+    }
+</div>

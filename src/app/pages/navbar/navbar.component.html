@@ -1,0 +1,59 @@
+@if(perfilCargado) {
+    @if(this.perfil === "Paciente") {
+        <nav [ngClass]="{'active': isMenuOpen}">
+            <div class="div_logo">
+                <img class="img_logo" src="images/home/logo.png" alt="logo">
+                <a href="home" class="titulo">Clínica Online</a>
+            </div>
+            <div class="menu-toggle" (click)="toggleMenu()">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul>
+                <li><a href="mis-turnos">Mis Turnos</a></li>
+                <li><a href="solicitar-turno">Solicitar Turno</a></li>
+                <li><a href="perfil">Mi Perfil</a></li>
+                <li><a (click)="salir()">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    } @else if(this.perfil === "Especialista") {
+        <nav [ngClass]="{'active': isMenuOpen}">
+            <div class="div_logo">
+                <img class="img_logo" src="images/home/logo.png" alt="logo">
+                <a href="home" class="titulo">Clínica Online</a>
+            </div>
+            <div class="menu-toggle" (click)="toggleMenu()">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul>
+                <li><a href="pacientes">Pacientes</a></li>
+                <li><a href="mis-turnos">Mis Turnos</a></li>
+                <li><a href="perfil">Mi Perfil</a></li>
+                <li><a (click)="salir()">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    } @else {
+        <nav [ngClass]="{'active': isMenuOpen}">
+            <div class="div_logo">
+                <img class="img_logo" src="images/home/logo.png" alt="logo">
+                <a href="home" class="titulo">Clínica Online</a>
+            </div>
+            <div class="menu-toggle" (click)="toggleMenu()">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul>
+                <li><a href="usuarios">Usuarios</a></li>
+                <li><a href="turnos">Turnos</a></li>
+                <li><a href="estadisticas">Estadísticas</a></li>
+                <li><a href="solicitar-turno">Solicitar Turno</a></li>
+                <li><a href="perfil">Mi Perfil</a></li>
+                <li><a (click)="salir()">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    }
+}

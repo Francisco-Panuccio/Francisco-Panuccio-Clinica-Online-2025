@@ -1,0 +1,40 @@
+<app-navbar></app-navbar>
+@if(this.cargando === true) {
+    <div class="loading-container-general">
+        <p class="p_spinner">Cargando Información...</p>
+        <div class="spinner"></div>
+    </div>
+} @else { 
+    <div class="div_contenedor">
+        <div class="div_turnos">
+            <p>Turnos</p>
+            <input type="text" placeholder="Busque aquí..." [(ngModel)]="filtro" (input)="filtrarTurnos()">
+            @for(turno of turnos; track turno) {
+                <div class="div_datos">
+                    <span><strong>Especialista:</strong> {{turno.especialistaApellido}}</span>
+                    <span><strong>Especialidad:</strong> {{turno.especialidad | titlecase}}</span>
+                    <span><strong>Fecha:</strong> {{turno.fecha | date:"dd/MM/yyyy"}}</span>
+                    <span><strong>Hora:</strong> {{turno.hora | formatoHora }}</span>
+                    <span class="span_estado" [style.color]="turno.estado | estadoTurno"><strong>Estado del Turno:</strong> {{turno.estado}}</span>
+                    <div class="div_btns">
+                        @if(turno.estado === "Pendiente") {
+                            <button (click)="mostrarComentarioPara(turno, 'Cancelado')">Cancelar Turno</button>
+                        }
+
+                        @if(mostrarComentario[turno.id_turno]) {
+                            <textarea placeholder="Escriba un comentario..." [(ngModel)]="comentario_value[turno.id_turno]"></textarea>
+                            <button (click)="enviarComentario(turno)">Enviar</button>
+                        }
+
+                        @if(turno.comentario) {
+                            <button (click)="verComentario()" class="btn_comentario">Ver Comentario</button>
+                            @if(verComentarioBool) {
+                                <span class="span_comentario">{{turno.comentario_paciente}}</span>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

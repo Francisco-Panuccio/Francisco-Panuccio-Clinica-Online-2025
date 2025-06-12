@@ -1,0 +1,63 @@
+<app-navbar></app-navbar>
+@if(this.cargando === true) {
+    <div class="loading-container-general">
+        <p class="p_spinner">Cargando Información...</p>
+        <div class="spinner"></div>
+    </div>
+} @else {
+    <div class="div_main">
+        <h1>Pacientes</h1>
+        @if(habilitarDataExtra !== null) {
+            <span class="span_divisor">Historial Clínico</span>
+            @for(turno of turnosPorPaciente[pacienteActualID]; track turno) { 
+                <div class="div_historial">
+                    <p class="p_historial"><span class="span_clave">Fecha: </span><span class="span_valor">{{turno.fecha | date:"dd/MM/yyyy"}}</span></p>
+                    <p class="p_historial"><span class="span_clave">Hora: </span><span class="span_valor">{{turno.hora | formatoHora}}</span></p>
+                    <p class="p_historial"><span class="span_clave">Especialidad: </span><span class="span_valor">{{turno.especialidad | titlecase}}</span></p>
+                    <p class="p_historial"><span class="span_clave">Comentario Especialista: </span><span class="span_valor">{{turno.comentario_especialista || "-"}}</span></p>
+                    <p class="p_historial"><span class="span_clave">Comentario Paciente: </span><span class="span_valor">{{turno.comentario_paciente || "-"}}</span></p>
+                    @if(turno.historia_clinica) {
+                            <span class="span_divisor2">Datos Clínicos:</span>
+                            <p class="p_historial"><span class="span_clave">Altura: </span><span class="span_valor">{{turno.historia_clinica.altura}}cm</span></p>
+                            <p class="p_historial"><span class="span_clave">Peso: </span><span class="span_valor">{{turno.historia_clinica.peso}}kg</span></p>
+                            <p class="p_historial"><span class="span_clave">Temperatura: </span><span class="span_valor">{{turno.historia_clinica.temperatura}}°C</span></p>
+                            <p class="p_historial"><span class="span_clave">Presión: </span><span class="span_valor">{{turno.historia_clinica.presion}}mmHg</span></p>
+                            @if(turno.historia_clinica.datosAdicionales.length > 0) {
+                                @for(dato of turno.historia_clinica.datosAdicionales; track dato) {
+                                    <p class="p_historial"><span class="span_clave">{{dato.clave | titlecase}}: </span><span class="span_valor">{{dato.valor | titlecase}}</span></p>
+                                }
+                            }
+                    }
+                </div>
+            }
+            <button type="button" class="btn_historial2" (click)="habilitarData(pacienteActualID)">Historial</button>
+        } @else {
+            @for(paciente of pacientes; track paciente) {
+                <div class="div_paciente">
+                    <div class="div_imagen">
+                        <button type="button" class="btn_redondo" (click)="mostrarData(paciente.id_paciente)">
+                            <img [src]="fotosPacientes[paciente.email] || fotoPerfilDefault" class="img_redonda">
+                        </button>
+                        <span class="span_nombre">{{`${paciente.nombre} ${paciente.apellido}`}}</span>
+                    </div>
+    
+                    @if(dataExpandida.has(paciente.id_paciente)) {
+                        <div class="div_data_paciente">
+                            @for(turno of turnosPorPaciente[paciente.id_paciente]; track turno) {
+                                <div class="div_turno">
+                                    <div class="div_data">
+                                        <p class="p_historial"><span class="span_clave">Especialidad: </span><span class="span_valor">{{turno.especialidad | titlecase}}</span></p>
+                                        <p class="p_historial"><span class="span_clave">Fecha: </span><span class="span_valor">{{turno.fecha | date:"dd/MM/yyyy"}}</span></p>
+                                        <p class="p_historial"><span class="span_clave">Hora: </span><span class="span_valor">{{turno.hora | formatoHora}}</span></p>
+                                        <p class="p_historial"><span class="span_clave">Estado: </span><span class="span_valor" [style.color]="turno.estado | estadoTurno">{{turno.estado}}</span></p>
+                                    </div>
+                                </div>
+                            }
+                            <button type="button" class="btn_historial" (click)="habilitarData(paciente.id_paciente)">Historial</button>
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+}

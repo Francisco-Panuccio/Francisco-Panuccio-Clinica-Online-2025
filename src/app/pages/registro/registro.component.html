@@ -1,0 +1,124 @@
+<h1>Registro</h1>
+
+@if(visualRegistro) {
+    <div class="div_btns">
+        <button class="btn_eleccion_paciente btn_eleccion" (click)="eleccionRegistro('Paciente')"></button>
+        <button class="btn_eleccion_especialista btn_eleccion" (click)="eleccionRegistro('Especialista')"></button>
+    </div>
+} @else {
+    <div class="div_seleccion">
+        <p>Seleccione Usuario:</p>
+        <select [(ngModel)]="usuario" (ngModelChange)="actualizarValidadoresDeEspecialidades()">
+            <option>Paciente</option>
+            <option>Especialista</option>
+        </select>
+    </div>
+
+    @if(usuario === "Paciente") {
+        <div class="div_form">
+            <form [formGroup]="formulario" (ngSubmit)="registrarse()">
+                <input type="text" formControlName="nombre" placeholder="Nombre">
+                <app-form-errors [control]="formulario.controls.nombre"/>
+
+                <input type="text" formControlName="apellido" placeholder="Apellido">
+                <app-form-errors [control]="formulario.controls.apellido"/>
+
+                <input type="text" formControlName="edad" placeholder="Edad">
+                <app-form-errors [control]="formulario.controls.edad"/>
+                
+                <input type="text" formControlName="dni" placeholder="D.N.I. (Sin Puntos)">
+                <app-form-errors [control]="formulario.controls.dni"/>
+
+                <select formControlName="obra_social" class="slc_inp">
+                    <option>OSDE</option>
+                    <option>Swiss Medical</option>
+                    <option>IOMA</option>
+                    <option>Galeno</option>
+                    <option>Sin Obra Social</option>
+                </select>
+                <app-form-errors [control]="formulario.controls.obra_social"/>
+
+                <input type="email" formControlName="email" placeholder="Email">
+                @if(this.usuarioRegistrado) {<span class="span_error">Usuario Registrado</span>}
+                <app-form-errors [control]="formulario.controls.email"/>
+
+                <div class="div_contraseña">
+                    <input [type]="isPasswordVisible ? 'text' : 'password'" formControlName="contrasena" placeholder="Contraseña">
+                    <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+                        <i [class]="isPasswordVisible ?  'bi-eye-fill' : 'bi bi-eye-slash-fill'"></i>
+                    </button>
+                </div>
+                <app-form-errors [control]="formulario.controls.contrasena"/>
+
+                <div>
+                    <p class="p_foto">Seleccione Dos Fotos:</p>
+                    <input type="file" formControlName="archivo" (change)="onCambioDeArchivo($event)" multiple>
+                </div>
+                <app-form-errors [control]="formulario.controls.archivo"/>
+
+                <button type="submit" class="btn_enviar" [disabled]="formulario.invalid">Enviar</button>
+            </form>
+        </div>
+    } @else {
+        <div class="div_form">        
+            <form [formGroup]="formulario" (ngSubmit)="registrarse()">
+                <input type="text" formControlName="nombre" placeholder="Nombre">
+                <app-form-errors [control]="formulario.controls.nombre"/>
+
+                <input type="text" formControlName="apellido" placeholder="Apellido">
+                <app-form-errors [control]="formulario.controls.apellido"/>
+
+                <input type="text" formControlName="edad" placeholder="Edad">
+                <app-form-errors [control]="formulario.controls.edad"/>
+
+                <input type="text" formControlName="dni" placeholder="D.N.I. (Sin Puntos)">
+                <app-form-errors [control]="formulario.controls.dni"/>
+
+                <div class="div_especialidades">
+                    <input list="especialidades" class="inp_esp" formControlName="especialidades" placeholder="Especialidad/es (Max. 3)">
+                    <datalist id="especialidades">
+                        <option>Medicina</option>
+                        <option>Pediatria</option>
+                        <option>Odontologia</option>
+                        <option>Cirugia</option>
+                        <option>Fisioterapia</option>
+                        <option>Psicologia</option>
+                    </datalist>
+                    <button type="button" class="btn_agregar" (click)="agregarEspecialidad()">+</button>
+                </div>
+                @if(this.camposRepetidos) {<span class="span_error">Campos Repetidos</span>}
+                <app-form-errors [control]="formulario.controls.especialidades"/>
+                @for(input of inputsEsp; track $index) {
+                    <div class="div_inputs_extra">
+                        <input list="especialidades" class="inp_esp" placeholder="Especialidad Extra" [value]="inputsEsp[$index]" #inputExt (input)="actualizarEspecialidad($index, $event)" (focus)="camposRepetidos = false">
+                        <button type="button" class="btn_eliminar" (click)="eliminarEspecialidad($index)">-</button>
+                    </div>
+                }
+
+                <input type="email" class="inp_email" formControlName="email" placeholder="Email">
+                @if(this.usuarioRegistrado) {<span class="span_error">Usuario Registrado</span>}
+                <app-form-errors [control]="formulario.controls.email"/>
+
+                <div class="div_contraseña">
+                    <input [type]="isPasswordVisible ? 'text' : 'password'" formControlName="contrasena" placeholder="Contraseña">
+                    <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+                        <i [class]="isPasswordVisible ?  'bi-eye-fill' : 'bi bi-eye-slash-fill'"></i>
+                    </button>
+                </div>
+                <app-form-errors [control]="formulario.controls.contrasena"/>
+
+                <div>
+                    <p>Seleccione Una Foto:</p>
+                    <input type="file" formControlName="archivo" (change)="onCambioDeArchivo($event)" multiple>
+                </div>
+                <app-form-errors [control]="formulario.controls.archivo"/>
+
+                <button type="submit" class="btn_enviar" [disabled]="formulario.invalid">Enviar</button>
+            </form>
+        </div>
+    }
+    <div class="sign-in">
+        <span>¿Ya eres miembro?</span>
+        <a href="login"> ¡Inicia Sesión!</a>
+    </div>
+}

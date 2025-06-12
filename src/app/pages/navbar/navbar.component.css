@@ -1,0 +1,156 @@
+nav {
+  display: flex;
+  position: sticky;
+  top: 0;
+  height: 120px;
+  width: 100%;
+  background: var(--tertiary-color);
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 50px;
+  flex-wrap: wrap;
+  z-index: 100;
+  border-bottom: 5px var(--secondary-color) solid;
+}
+
+.div_logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img_logo {
+  width: 50px;
+  height: 50px;
+  margin: 0 50px 0 0;
+}
+
+.titulo {
+  color: var(--primary-color);
+  font-size: 35px;
+  font-weight: 600;
+}
+
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+}
+
+nav ul li {
+  margin: 0 10px;
+}
+
+nav ul li a {
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 8px 15px;
+  border-radius: 5px;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #111;
+  background: var(--primary-color);
+  cursor: pointer;
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 30px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.menu-toggle .bar {
+  width: 30px;
+  height: 4px;
+  background-color: var(--primary-color);
+  border-radius: 5px;
+}
+
+/*Media Queries*/
+/* Tablets o pantallas medianas (769px a 1550px) */
+@media (max-width: 1550px) {
+  nav {
+    z-index: 2;
+  }
+
+  nav ul {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1b1b1b;
+    position: absolute;
+    top: 120px;
+    left: 0;
+    padding: 20px 0;
+    border-bottom: 5px var(--secondary-color) solid;
+  }
+
+  nav.active ul {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  nav ul li {
+    margin: 10px 0;
+    border-bottom: 2px solid var(--primary-color);
+  }
+
+  nav ul li a {
+    font-size: 20px;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  nav ul {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1b1b1b;
+    position: absolute;
+    top: 120px;
+    left: 0;
+    padding: 20px 0;
+  }
+
+  nav.active ul {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  nav ul li {
+    margin: 10px 0;
+  }
+
+  nav ul li a {
+    font-size: 20px;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  nav {
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+    gap: 10px;
+  }
+}
