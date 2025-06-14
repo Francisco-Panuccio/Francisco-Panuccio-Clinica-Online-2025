@@ -74,6 +74,7 @@ h1 {
   padding: 5px 10px;
   border: 2px solid var(--secondary-color);
   border-radius: 10px;
+  background-color: var(--primary-color);
 }
 
 .btn_historial,
