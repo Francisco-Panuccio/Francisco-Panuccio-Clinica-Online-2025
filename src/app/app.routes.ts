@@ -16,10 +16,12 @@ export const routes: Routes = [{
 }, {
     path: "registro", loadComponent: () => import("./pages/registro/registro.component").then((archivo) => archivo.RegistroComponent),
     canActivate: [noLogueadoGuard],
+    data: {animation: "RegistroPage"},
     title: "Registro"
 }, {
     path: "login", loadComponent: () => import("./pages/login/login.component").then((archivo) => archivo.LoginComponent),
     canActivate: [noLogueadoGuard],
+    data: {animation: "LoginPage"},
     title: "Login"
 }, {
     path: "usuarios", loadComponent: () => import("./pages/usuarios/usuarios.component").then((archivo) => archivo.UsuariosComponent),
